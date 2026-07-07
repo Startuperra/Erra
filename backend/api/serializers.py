@@ -4,20 +4,20 @@ from .models import Test, Question, Attempt
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Test
-        fields = ['id', 'title', 'description', 'category', 'difficulty', 'created_at']
+        fields = ['id', 'title', 'description', 'category', 'difficulty', 'created_at', 'passage', 'audio_url']
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         # correct_answer BU YERDA QASDDAN TUSHIRIB QOLDIRILGAN!
-        fields = ['id', 'order', 'question_text', 'question_type']
+        fields = ['id', 'order', 'question_text', 'question_type', 'options']
 
 class TestDetailSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Test
-        fields = ['id', 'title', 'description', 'category', 'difficulty', 'created_at', 'questions']
+        fields = ['id', 'title', 'description', 'category', 'difficulty', 'created_at', 'passage', 'audio_url', 'questions']
 
 class AttemptSerializer(serializers.ModelSerializer):
     class Meta:

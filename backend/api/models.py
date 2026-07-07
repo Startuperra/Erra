@@ -17,6 +17,8 @@ class Test(models.Model):
     description = models.TextField(blank=True, null=True)
     category = models.CharField(max_length=50) # Masalan: Reading, Listening
     difficulty = models.CharField(max_length=50, blank=True, null=True)
+    passage = models.TextField(blank=True, null=True, help_text="Reading testlari uchun matn (HTML)")
+    audio_url = models.URLField(blank=True, null=True, help_text="Listening testlari uchun audio fayl havolasi")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -26,8 +28,9 @@ class Question(models.Model):
     test = models.ForeignKey(Test, related_name='questions', on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
     question_text = models.TextField()
-    question_type = models.CharField(max_length=50) # Masalan: fill_blank, multiple_choice
-    correct_answer = models.JSONField(help_text="To'g'ri javob yoki variantlar")
+    question_type = models.CharField(max_length=50) # Masalan: fill_blank, multiple_choice, true_false_not_given
+    options = models.JSONField(blank=True, null=True, help_text="Variantlar (faqat multiple_choice uchun)")
+    correct_answer = models.JSONField(help_text="To'g'ri javoblar ro'yxati (masalan: [\"apple\", \"apples\"])")
 
     class Meta:
         ordering = ['order']

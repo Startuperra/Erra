@@ -92,8 +92,18 @@ class TestViewSet(viewsets.ReadOnlyModelViewSet):
 
         for q in questions:
             user_ans = normalize_answer(user_answers.get(str(q.id), ""))
-            correct_ans = normalize_answer(q.correct_answer)
-            if user_ans != correct_ans:
+            
+            # Check if correct_answer is a list (multiple correct answers)
+            is_correct = False
+            if isinstance(q.correct_answer, list):
+                correct_list = [normalize_answer(ans) for ans in q.correct_answer]
+                if user_ans in correct_list:
+                    is_correct = True
+            else:
+                if user_ans == normalize_answer(q.correct_answer):
+                    is_correct = True
+                    
+            if not is_correct:
                 wrong_count += 1
                 wrong_questions.append(q.id)
 
@@ -138,8 +148,17 @@ class TestViewSet(viewsets.ReadOnlyModelViewSet):
 
         for q in questions:
             user_ans = normalize_answer(user_answers.get(str(q.id), ""))
-            correct_ans = normalize_answer(q.correct_answer)
-            if user_ans != correct_ans:
+            
+            is_correct = False
+            if isinstance(q.correct_answer, list):
+                correct_list = [normalize_answer(ans) for ans in q.correct_answer]
+                if user_ans in correct_list:
+                    is_correct = True
+            else:
+                if user_ans == normalize_answer(q.correct_answer):
+                    is_correct = True
+                    
+            if not is_correct:
                 wrong_questions.append(q)
 
         if not wrong_questions:
@@ -159,6 +178,40 @@ class TestViewSet(viewsets.ReadOnlyModelViewSet):
         first_wrong = wrong_questions[0]
         return Response({
             "hint": f"Sizning xatolaringizdan biri {first_wrong.order}-savolda joylashgan."
+        })
+
+    @action(detail=True, methods=['post'], url_path='check-answers')
+    def check_answers(self, request, pk=None):
+        test = self.get_object()
+        user_answers = request.data.get('answers', {})
+        
+        questions = test.questions.all()
+        wrong_questions = []
+        correct_questions = []
+
+        for q in questions:
+            user_ans = normalize_answer(user_answers.get(str(q.id), ""))
+            
+            is_correct = False
+            if isinstance(q.correct_answer, list):
+                correct_list = [normalize_answer(ans) for ans in q.correct_answer]
+                if user_ans in correct_list:
+                    is_correct = True
+            else:
+                if user_ans == normalize_answer(q.correct_answer):
+                    is_correct = True
+                    
+            if is_correct:
+                correct_questions.append(q.id)
+            else:
+                wrong_questions.append(q.id)
+
+        return Response({
+            "total_questions": questions.count(),
+            "correct_count": len(correct_questions),
+            "wrong_count": len(wrong_questions),
+            "wrong_question_ids": wrong_questions,
+            "correct_question_ids": correct_questions
         })
 
 class DashboardView(APIView):
