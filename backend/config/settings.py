@@ -12,6 +12,7 @@ import dj_database_url
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['*'] # Production da o'zingizning domeningizni yozishingiz mumkin
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'https://*.vercel.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
