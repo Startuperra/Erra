@@ -1,5 +1,5 @@
 import axios from 'axios';
-import WebApp from '@twa-dev/sdk';
+const WebApp = window.Telegram?.WebApp;
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
 
@@ -17,7 +17,7 @@ api.interceptors.request.use(async (config) => {
 
 export const authenticateTelegram = async () => {
   try {
-    const initData = WebApp.initData;
+    const initData = WebApp?.initData;
     // Mahalliy test uchun initData yo'q bo'lsa
     if (!initData) {
         console.warn("initData topilmadi. Telegram ichidan kirmadingiz.");

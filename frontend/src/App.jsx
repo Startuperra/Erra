@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import WebApp from '@twa-dev/sdk';
+const WebApp = window.Telegram?.WebApp;
 import { authenticateTelegram } from './api';
 import TestList from './pages/TestList';
 import TestSolve from './pages/TestSolve';
@@ -11,8 +11,8 @@ function App() {
   const [authStatus, setAuthStatus] = useState('loading');
 
   useEffect(() => {
-    WebApp.ready();
-    WebApp.expand();
+    WebApp?.ready();
+    WebApp?.expand();
     
     authenticateTelegram().then((success) => {
       // Local dev uchun har doim true qilib qo'yishimiz mumkin (agar initData ishlamasa)

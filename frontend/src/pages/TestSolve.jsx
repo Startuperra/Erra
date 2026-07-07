@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
-import WebApp from '@twa-dev/sdk';
+const WebApp = window.Telegram?.WebApp;
 
 const TestSolve = () => {
   const { id } = useParams();
