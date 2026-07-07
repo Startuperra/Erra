@@ -27,19 +27,23 @@ Barcha kodlarni o'zingizning GitHub hisobingizga bitta repository qilib yuklang.
 
 ---
 
-## 3-Qadam: Backend (Django) - Render.com
+## 3-Qadam: Backend va Bot (Django + Aiogram) - Render.com
+Render'ning bepul planida alohida Background Worker ochib bo'lmagani uchun, biz Bot va Backend'ni bitta xizmat (Web Service) ichida birlashtirib ishga tushiramiz!
+
 1. Render-da **New** -> **Web Service** ni tanlang.
 2. GitHub'dagi repository-ni ulang.
-3. Sozlamalar:
+3. Sozlamalar (Juda muhim):
    - **Name:** ielts-backend
-   - **Root Directory:** `backend` (juda muhim, shuni yozing!)
+   - **Root Directory:** *(bosh qoldiring - hech narsa yozmang!)*
    - **Environment:** `Python 3`
-   - **Build Command:** `./build.sh`
-   - **Start Command:** `gunicorn config.wsgi:application`
+   - **Build Command:** `bash build.sh`
+   - **Start Command:** `bash start.sh`
    - **Plan:** Free
 4. **Environment Variables** (Muhit o'zgaruvchilari) bo'limini oching va quydagilarni qo'shing:
    - `DATABASE_URL` = (Boyagi bazaning Internal URL'i)
    - `DEBUG` = `False`
+   - `TELEGRAM_BOT_TOKEN` = (BotFather'dan olingan token)
+   - `WEBAPP_URL` = `https://ielts-frontend.vercel.app` (Buni 4-qadamdan keyin to'g'rilaysiz)
 5. **Create Web Service** ni bosing.
 6. Ishga tushgandan so'ng Render sizga link beradi: `https://ielts-backend-xxxx.onrender.com`. Shuni nusxalab oling.
 
@@ -54,23 +58,7 @@ Barcha kodlarni o'zingizning GitHub hisobingizga bitta repository qilib yuklang.
    - Name: `VITE_API_URL`
    - Value: `https://ielts-backend-xxxx.onrender.com/api` (Render bergan domen /api bilan)
 6. **Deploy** ni bosing. 
-7. Vercel sizga tayyor link beradi: `https://ielts-frontend.vercel.app`.
-
----
-
-## 5-Qadam: Telegram Bot - Render.com
-1. Render-da **New** -> **Background Worker** ni tanlang.
-2. Yana o'sha GitHub repository ni ulang.
-3. Sozlamalar:
-   - **Name:** ielts-bot
-   - **Root Directory:** `bot` (juda muhim!)
-   - **Environment:** `Python 3`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `python main.py`
-4. **Environment Variables**:
-   - `TELEGRAM_BOT_TOKEN` = (BotFather'dan olingan token)
-   - `WEBAPP_URL` = `https://ielts-frontend.vercel.app` (Vercel bergan frontend domeni)
-5. **Create Background Worker** ni bosing.
+7. Vercel sizga tayyor link beradi: `https://ielts-frontend.vercel.app`. Buni oling va Render'dagi `WEBAPP_URL` ga yozib qo'yishni unutmang!
 
 ---
 
